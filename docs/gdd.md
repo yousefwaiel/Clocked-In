@@ -2,7 +2,7 @@
 
 **Student Name:** Yousef Waiel Said  
 **Student ID:** 100857349  
-**First draft:** 22/09/2026 (CP1) · **Last updated:** 06/10/2026 (CP2, scope locked)  
+**First draft:** 22/09/2026 (CP1) · **Last updated:** 20/10/2026 (CP3; scope locked at CP2)  
 **Class:** CSCI 4160U Game Development  
 **Repository Link:** https://github.com/yousefwaiel/Clocked-In
 
@@ -124,7 +124,7 @@ The debt system adds a small amount of anxiety that normal clicker games don't h
 
 - **Genre:** incremental / idle resource-management. You are grinding your way out of debt, not clicking for the sake of clicking.
 - **Platform:** desktop (macOS, Windows, Linux), mouse and keyboard, 960×600 window.
-- **Tools:** Odin + Raylib (`vendor:raylib`), Git/GitHub. Placeholder shapes and Raylib's default font; no custom art.
+- **Tools:** Odin + Raylib (`vendor:raylib`), Git/GitHub. Placeholder shapes and Raylib's default font; no custom art. CC0 sound effects from Kenney.
 
 ## Progression Over Time
 
@@ -162,9 +162,9 @@ Ranked within each tier. After CP2, scope changes need a conversation with the T
 4. Lose (bankruptcy) and win (debt-free CEO) conditions ✅ *(CP2)*
 5. Quit / prestige with an Experience multiplier across 6 jobs ✅ *(CP2)*
 6. Title screen that teaches the game, plus pause and end screens ✅ *(CP2)*
-7. Tuning values and job data loaded from files in `data/` *(CP3)*
+7. Tuning values and job data loaded from files in `data/` ✅ *(CP3)*
 8. **Debt Collector** enemy: state machine (Waiting → Approaching → Collecting → Fleeing) with seek/arrive/flee steering *(CP4)*
-9. Simple sound effects: work click, purchase, quit, bankrupt *(by Nov 9 studio)*
+9. Simple sound effects: work click, purchase, loan, denied, quit, bankrupt ✅ *(CP3)*
 10. Difficulty tuned from playtest data to a ~10-minute run *(CP5/CP6)*
 
 ### Should-have

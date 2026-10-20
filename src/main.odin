@@ -14,9 +14,14 @@ main :: proc() {
 	}
 	defer game_destroy(&game)
 
+	assets := assets_load()
+	defer assets_unload(&assets)
+	rl.SetMasterVolume(game.tuning.volume)
+
 	for !rl.WindowShouldClose() && !game.should_exit {
 		actions := input_poll()
 		game_update(&game, actions, rl.GetFrameTime())
+		play_sounds(assets, game.sounds)
 
 		rl.BeginDrawing()
 		game_draw(game)

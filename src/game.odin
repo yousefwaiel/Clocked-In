@@ -19,6 +19,7 @@ Game :: struct {
 	jobs:           []Job,
 	upgrades:       [Upgrade_Kind]Upgrade_Def,
 	entities:       [dynamic]Entity,
+	sounds:         bit_set[Sound_Id], // played by main after update
 
 	// kept between jobs
 	jobs_completed: int,
@@ -74,6 +75,7 @@ start_job :: proc(g: ^Game, index: int) {
 
 game_update :: proc(g: ^Game, actions: Actions, dt: f32) {
 	g.state_time += dt
+	g.sounds = {}
 	end_screen_ready := g.state_time >= END_SCREEN_DELAY
 
 	switch g.state {
@@ -135,12 +137,14 @@ update_playing :: proc(g: ^Game, actions: Actions, dt: f32) {
 
 	if g.debt >= bankrupt_limit(g^) {
 		set_state(g, .Game_Over)
+		g.sounds += {.Bankrupt}
 	}
 }
 
 work_click :: proc(g: ^Game) {
 	amount := wage_per_click(g^)
 	earn(g, amount)
+	g.sounds += {.Work}
 	button := find_entity(g, .Work_Button)
 	button.flash = 0.1
 	spawn_popup(g, entity_center(button^), amount)
@@ -158,13 +162,16 @@ earn :: proc(g: ^Game, amount: f64) {
 
 try_buy :: proc(g: ^Game, kind: Upgrade_Kind) {
 	if purchase_status(g^, kind) != .Ok {
+		g.sounds += {.Denied}
 		return
 	}
 	cost := upgrade_cost(g^, kind)
 	if g.upgrades[kind].is_loan {
 		g.debt += cost
+		g.sounds += {.Loan}
 	} else {
 		g.cash -= cost
+		g.sounds += {.Buy}
 	}
 	g.owned[kind] += 1
 	if kind == .Coworker {
@@ -182,6 +189,7 @@ refresh_unlocks :: proc(g: ^Game) {
 
 quit_job :: proc(g: ^Game) {
 	g.jobs_completed += 1
+	g.sounds += {.Quit}
 	if is_last_job(g^) {
 		set_state(g, .Victory)
 	} else {
