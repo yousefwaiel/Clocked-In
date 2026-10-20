@@ -2,21 +2,12 @@ package clocked_in
 
 import "core:math"
 
-// TODO move to data/ for CP3
+// values come from data/*.json
 
 Job :: struct {
 	title:         string,
 	starting_debt: f64,
 	wage:          f64, // per click
-}
-
-JOBS := [?]Job {
-	{"Janitor", 50, 0.25},
-	{"Barista", 400, 1.0},
-	{"Intern", 3_000, 4.0},
-	{"Cubicle Drone", 25_000, 16.0},
-	{"Middle Manager", 200_000, 64.0},
-	{"CEO", 1_500_000, 256.0},
 }
 
 Upgrade_Kind :: enum {
@@ -37,14 +28,6 @@ Upgrade_Def :: struct {
 	is_loan:     bool, // costs debt not cash
 }
 
-UPGRADES := [Upgrade_Kind]Upgrade_Def {
-	.Coworker    = {"Hire Coworker", "Works for you once a second", 1.0, 1.4, 8, 0.0, false},
-	.Overtime    = {"Overtime", "+25% pay per click", 2.0, 1.6, 10, 0.0, false},
-	.Budget_App  = {"Budget App", "+10% of pay goes to debt", 3.0, 1.8, 4, 0.15, false},
-	.Refinance   = {"Refinance", "Interest rate x0.7", 5.0, 2.0, 3, 0.30, false},
-	.Payday_Loan = {"Payday Loan", "Pay x1.5, but adds debt", 0, 1.5, 4, 0.0, true},
-}
-
 Tuning :: struct {
 	payment_share:      f64, // % to debt
 	payment_share_step: f64,
@@ -59,32 +42,15 @@ Tuning :: struct {
 	coworker_share:     f64,
 	xp_per_job:         f64,
 	popup_lifetime:     f32,
-}
-
-default_tuning :: proc() -> Tuning {
-	return Tuning {
-		payment_share      = 0.5,
-		payment_share_step = 0.1,
-		payment_share_max  = 0.9,
-		interest_per_sec   = 0.003,
-		refinance_factor   = 0.7,
-		bankrupt_factor    = 2.0,
-		overtime_bonus     = 0.25,
-		loan_wage_mult     = 1.5,
-		loan_debt_fraction = 0.4,
-		coworker_interval  = 1.0,
-		coworker_share     = 0.5,
-		xp_per_job         = 0.5,
-		popup_lifetime     = 0.8,
-	}
+	volume:             f32,
 }
 
 current_job :: proc(g: Game) -> Job {
-	return JOBS[g.job_index]
+	return g.jobs[g.job_index]
 }
 
 is_last_job :: proc(g: Game) -> bool {
-	return g.job_index == len(JOBS) - 1
+	return g.job_index == len(g.jobs) - 1
 }
 
 xp_multiplier :: proc(g: Game) -> f64 {
@@ -127,12 +93,12 @@ paid_fraction :: proc(g: Game) -> f64 {
 }
 
 upgrade_cost :: proc(g: Game, kind: Upgrade_Kind) -> f64 {
-	def := UPGRADES[kind]
+	def := g.upgrades[kind]
 	growth := math.pow(def.cost_growth, f64(g.owned[kind]))
 	if def.is_loan {
 		return g.starting_debt * g.tuning.loan_debt_fraction * growth
 	}
-	job_scale := current_job(g).wage / JOBS[0].wage
+	job_scale := current_job(g).wage / g.jobs[0].wage
 	return def.base_cost * job_scale * growth
 }
 
@@ -144,7 +110,7 @@ Purchase_Status :: enum {
 }
 
 purchase_status :: proc(g: Game, kind: Upgrade_Kind) -> Purchase_Status {
-	def := UPGRADES[kind]
+	def := g.upgrades[kind]
 	switch {
 	case !g.unlocked[kind]:
 		return .Locked

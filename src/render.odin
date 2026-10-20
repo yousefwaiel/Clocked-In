@@ -30,7 +30,7 @@ game_draw :: proc(g: Game) {
 
 	case .Job_Complete:
 		draw_playing(g)
-		next := JOBS[g.job_index + 1]
+		next := g.jobs[g.job_index + 1]
 		draw_overlay(
 			g,
 			"YOU QUIT!",
@@ -89,7 +89,7 @@ draw_playing :: proc(g: Game) {
 
 	rl.DrawRectangleRounded(OFFICE_RECT, 0.03, 8, COLOR_PANEL)
 	draw_debt_bar(g)
-	text(fmt.tprintf("Coworkers %d/%d", g.owned[.Coworker], UPGRADES[.Coworker].max_owned), 32, 320, 18, COLOR_MUTED)
+	text(fmt.tprintf("Coworkers %d/%d", g.owned[.Coworker], g.upgrades[.Coworker].max_owned), 32, 320, 18, COLOR_MUTED)
 	text("Space", WORK_BUTTON_RECT.x + 84, WORK_BUTTON_RECT.y + WORK_BUTTON_RECT.height + 8, 16, COLOR_MUTED)
 
 	for e in g.entities {
@@ -102,7 +102,7 @@ draw_playing :: proc(g: Game) {
 draw_header :: proc(g: Game) {
 	rl.DrawRectangleRec(HEADER_RECT, COLOR_PANEL)
 	job := current_job(g)
-	text(fmt.tprintf("JOB %d/%d  %s", g.job_index + 1, len(JOBS), job.title), 16, 10, 24, COLOR_TEXT)
+	text(fmt.tprintf("JOB %d/%d  %s", g.job_index + 1, len(g.jobs), job.title), 16, 10, 24, COLOR_TEXT)
 	text(fmt.tprintf("Experience x%.1f", xp_multiplier(g)), 16, 40, 16, COLOR_ACCENT)
 
 	stat(g, "CASH", money(g.cash), 400, COLOR_CASH)
@@ -191,7 +191,7 @@ draw_upgrade_panel :: proc(g: Game) {
 
 draw_upgrade_button :: proc(g: Game, kind: Upgrade_Kind) {
 	r := upgrade_rect(kind)
-	def := UPGRADES[kind]
+	def := g.upgrades[kind]
 	status := purchase_status(g, kind)
 
 	bg := COLOR_BUTTON

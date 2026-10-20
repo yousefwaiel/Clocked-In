@@ -8,7 +8,10 @@ main :: proc() {
 	rl.SetTargetFPS(60)
 	rl.SetExitKey(.KEY_NULL) // esc = pause
 
-	game := game_init()
+	game: Game
+	if !game_init(&game) {
+		return
+	}
 	defer game_destroy(&game)
 
 	for !rl.WindowShouldClose() && !game.should_exit {

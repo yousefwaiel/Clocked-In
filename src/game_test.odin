@@ -5,7 +5,8 @@ import "core:testing"
 // odin test src
 
 start_playing :: proc() -> Game {
-	g := game_init()
+	g: Game
+	game_init(&g)
 	game_update(&g, {.Confirm}, 0)
 	return g
 }
@@ -16,7 +17,8 @@ near :: proc(a, b: f64) -> bool {
 
 @(test)
 title_starts_the_game :: proc(t: ^testing.T) {
-	g := game_init()
+	g: Game
+	testing.expect(t, game_init(&g))
 	defer game_destroy(&g)
 	testing.expect_value(t, g.state, Game_State.Title)
 	game_update(&g, {.Confirm}, 0)
@@ -110,7 +112,7 @@ quit_needs_zero_debt_and_keeps_experience :: proc(t: ^testing.T) {
 	testing.expect_value(t, g.state, Game_State.Playing)
 	testing.expect_value(t, g.job_index, 1)
 	testing.expect(t, near(g.cash, 0))
-	testing.expect(t, near(g.debt, JOBS[1].starting_debt))
+	testing.expect(t, near(g.debt, g.jobs[1].starting_debt))
 	testing.expect(t, near(xp_multiplier(g), 1.5))
 }
 
@@ -118,7 +120,7 @@ quit_needs_zero_debt_and_keeps_experience :: proc(t: ^testing.T) {
 paying_off_the_last_job_wins :: proc(t: ^testing.T) {
 	g := start_playing()
 	defer game_destroy(&g)
-	start_job(&g, len(JOBS) - 1)
+	start_job(&g, len(g.jobs) - 1)
 	g.debt = 0
 	game_update(&g, {.Quit}, 0)
 	testing.expect_value(t, g.state, Game_State.Victory)
@@ -132,4 +134,15 @@ upgrades_unlock_as_debt_is_paid :: proc(t: ^testing.T) {
 	g.debt = g.starting_debt * 0.5
 	game_update(&g, {}, 0)
 	testing.expect(t, g.unlocked[.Refinance])
+}
+
+@(test)
+data_loads_from_files :: proc(t: ^testing.T) {
+	g: Game
+	testing.expect(t, game_init(&g))
+	defer game_destroy(&g)
+	testing.expect_value(t, len(g.jobs), 6)
+	testing.expect_value(t, g.jobs[0].title, "Janitor")
+	testing.expect(t, g.upgrades[.Payday_Loan].is_loan)
+	testing.expect(t, g.tuning.interest_per_sec > 0)
 }

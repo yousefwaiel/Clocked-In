@@ -1,0 +1,22 @@
+{
+	"Coworker": {
+		"name": "Hire Coworker", "blurb": "Works for you once a second",
+		"base_cost": 1.0, "cost_growth": 1.4, "max_owned": 8, "unlock_at": 0.0, "is_loan": false
+	},
+	"Overtime": {
+		"name": "Overtime", "blurb": "+25% pay per click",
+		"base_cost": 2.0, "cost_growth": 1.6, "max_owned": 10, "unlock_at": 0.0, "is_loan": false
+	},
+	"Budget_App": {
+		"name": "Budget App", "blurb": "+10% of pay goes to debt",
+		"base_cost": 3.0, "cost_growth": 1.8, "max_owned": 4, "unlock_at": 0.15, "is_loan": false
+	},
+	"Refinance": {
+		"name": "Refinance", "blurb": "Interest rate x0.7",
+		"base_cost": 5.0, "cost_growth": 2.0, "max_owned": 3, "unlock_at": 0.30, "is_loan": false
+	},
+	"Payday_Loan": {
+		"name": "Payday Loan", "blurb": "Pay x1.5, but adds debt",
+		"base_cost": 0, "cost_growth": 1.5, "max_owned": 4, "unlock_at": 0.0, "is_loan": true
+	}
+}

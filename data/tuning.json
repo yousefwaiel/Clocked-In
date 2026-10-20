@@ -1,0 +1,16 @@
+{
+	"payment_share": 0.5,
+	"payment_share_step": 0.1,
+	"payment_share_max": 0.9,
+	"interest_per_sec": 0.003,
+	"refinance_factor": 0.7,
+	"bankrupt_factor": 2.0,
+	"overtime_bonus": 0.25,
+	"loan_wage_mult": 1.5,
+	"loan_debt_fraction": 0.4,
+	"coworker_interval": 1.0,
+	"coworker_share": 0.5,
+	"xp_per_job": 0.5,
+	"popup_lifetime": 0.8,
+	"volume": 0.6
+}

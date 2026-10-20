@@ -16,6 +16,8 @@ Game :: struct {
 	state:          Game_State,
 	state_time:     f32,
 	tuning:         Tuning,
+	jobs:           []Job,
+	upgrades:       [Upgrade_Kind]Upgrade_Def,
 	entities:       [dynamic]Entity,
 
 	// kept between jobs
@@ -33,17 +35,18 @@ Game :: struct {
 	should_exit:    bool,
 }
 
-game_init :: proc() -> Game {
-	g := Game {
-		state  = .Title,
-		tuning = default_tuning(),
+game_init :: proc(g: ^Game) -> bool {
+	if !load_data(g) {
+		return false
 	}
-	start_job(&g, 0)
-	return g
+	g.state = .Title
+	start_job(g, 0)
+	return true
 }
 
 game_destroy :: proc(g: ^Game) {
 	delete(g.entities)
+	unload_data(g)
 }
 
 set_state :: proc(g: ^Game, state: Game_State) {
@@ -59,7 +62,7 @@ new_career :: proc(g: ^Game) {
 
 start_job :: proc(g: ^Game, index: int) {
 	g.job_index = index
-	g.starting_debt = JOBS[index].starting_debt
+	g.starting_debt = g.jobs[index].starting_debt
 	g.debt = g.starting_debt
 	g.cash = 0
 	g.owned = {}
@@ -158,7 +161,7 @@ try_buy :: proc(g: ^Game, kind: Upgrade_Kind) {
 		return
 	}
 	cost := upgrade_cost(g^, kind)
-	if UPGRADES[kind].is_loan {
+	if g.upgrades[kind].is_loan {
 		g.debt += cost
 	} else {
 		g.cash -= cost
@@ -171,7 +174,7 @@ try_buy :: proc(g: ^Game, kind: Upgrade_Kind) {
 
 refresh_unlocks :: proc(g: ^Game) {
 	for kind in Upgrade_Kind {
-		if paid_fraction(g^) >= UPGRADES[kind].unlock_at {
+		if paid_fraction(g^) >= g.upgrades[kind].unlock_at {
 			g.unlocked[kind] = true
 		}
 	}
