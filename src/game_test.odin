@@ -146,3 +146,52 @@ data_loads_from_files :: proc(t: ^testing.T) {
 	testing.expect(t, g.upgrades[.Payday_Loan].is_loan)
 	testing.expect(t, g.tuning.interest_per_sec > 0)
 }
+
+run_for :: proc(g: ^Game, seconds: f32) {
+	for _ in 0 ..< int(seconds * 60) {
+		game_update(g, {}, 1.0 / 60)
+	}
+}
+
+@(test)
+collector_stays_away_at_starting_debt :: proc(t: ^testing.T) {
+	g := start_playing()
+	defer game_destroy(&g)
+	run_for(&g, 1)
+	testing.expect_value(t, collector_state(g), Collector_State.Away)
+}
+
+@(test)
+collector_walks_in_as_debt_rises :: proc(t: ^testing.T) {
+	g := start_playing()
+	defer game_destroy(&g)
+	g.debt = g.starting_debt * 1.3
+	run_for(&g, 3)
+	c := find_entity(&g, .Collector)
+	testing.expect_value(t, c.collector, Collector_State.Approaching)
+	testing.expect(t, c.progress > 0 && c.progress < 1) // stops partway, matching the debt
+}
+
+@(test)
+collector_takes_cash :: proc(t: ^testing.T) {
+	g := start_playing()
+	defer game_destroy(&g)
+	g.debt = g.starting_debt * 1.8
+	g.cash = 100
+	run_for(&g, 4)
+	testing.expect_value(t, collector_state(g), Collector_State.Collecting)
+	testing.expect(t, g.cash < 100)
+}
+
+@(test)
+collector_leaves_when_debt_is_paid :: proc(t: ^testing.T) {
+	g := start_playing()
+	defer game_destroy(&g)
+	g.debt = g.starting_debt * 1.8
+	run_for(&g, 4)
+	g.debt = g.starting_debt * 0.5
+	game_update(&g, {}, 1.0 / 60)
+	testing.expect_value(t, collector_state(g), Collector_State.Leaving)
+	run_for(&g, 4)
+	testing.expect_value(t, collector_state(g), Collector_State.Away)
+}

@@ -9,6 +9,7 @@ Sound_Id :: enum {
 	Denied,
 	Quit,
 	Bankrupt,
+	Collected,
 }
 
 SOUND_FILES := [Sound_Id]cstring {
@@ -18,6 +19,7 @@ SOUND_FILES := [Sound_Id]cstring {
 	.Denied   = "assets/sounds/error_004.ogg",
 	.Quit     = "assets/sounds/confirmation_002.ogg",
 	.Bankrupt = "assets/sounds/error_006.ogg",
+	.Collected = "assets/sounds/error_004.ogg",
 }
 
 // loaded once at startup, shared by everything

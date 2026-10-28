@@ -12,5 +12,11 @@
 	"coworker_share": 0.5,
 	"xp_per_job": 0.5,
 	"popup_lifetime": 0.8,
-	"volume": 0.6
+	"volume": 0.6,
+	"collector_approach_at": 1.15,
+	"collector_collect_at": 1.6,
+	"collector_leave_at": 1.05,
+	"collector_speed": 0.35,
+	"collector_take_rate": 0.25,
+	"collector_fee": 0.5
 }

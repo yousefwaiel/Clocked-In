@@ -72,10 +72,11 @@ draw_title :: proc() {
 		"Spend the rest on upgrades (click them, or keys 1-5).",
 		"Payday Loans raise your pay, but they add debt.",
 		"Interest grows your debt. If it doubles, you're bankrupt.",
+		"Let debt pile up and the Debt Collector walks in to take your cash.",
 		"Debt at zero? QUIT (Q) for a better job. Experience carries over.",
 	}
 	for line, i in lines {
-		text_centered(line, cx, 250 + f32(i) * 32, 20, COLOR_MUTED)
+		text_centered(line, cx, 240 + f32(i) * 30, 20, COLOR_MUTED)
 	}
 
 	if blink() {
@@ -92,6 +93,7 @@ draw_playing :: proc(g: Game) {
 	text(fmt.tprintf("Coworkers %d/%d", g.owned[.Coworker], g.upgrades[.Coworker].max_owned), 32, 320, 18, COLOR_MUTED)
 	text("Space", WORK_BUTTON_RECT.x + 84, WORK_BUTTON_RECT.y + WORK_BUTTON_RECT.height + 8, 16, COLOR_MUTED)
 
+	draw_door(g)
 	for e in g.entities {
 		draw_entity(e, g.tuning)
 	}
@@ -105,7 +107,8 @@ draw_header :: proc(g: Game) {
 	text(fmt.tprintf("JOB %d/%d  %s", g.job_index + 1, len(g.jobs), job.title), 16, 10, 24, COLOR_TEXT)
 	text(fmt.tprintf("Experience x%.1f", xp_multiplier(g)), 16, 40, 16, COLOR_ACCENT)
 
-	stat(g, "CASH", money(g.cash), 400, COLOR_CASH)
+	cash_color := collector_state(g) == .Collecting ? COLOR_DEBT : COLOR_CASH
+	stat(g, "CASH", money(g.cash), 400, cash_color)
 	stat(g, "PER CLICK", money(wage_per_click(g)), 590, COLOR_TEXT)
 	stat(g, "COWORKERS", fmt.tprintf("%s/s", money(coworker_income_per_sec(g))), 770, COLOR_TEXT)
 }
@@ -127,6 +130,10 @@ draw_debt_bar :: proc(g: Game) {
 	// starting debt marker
 	start_x := bar.x + bar.width * f32(g.starting_debt / limit)
 	rl.DrawRectangle(i32(start_x), i32(bar.y) - 4, 2, i32(bar.height) + 8, COLOR_TEXT)
+
+	// collector shows up past this
+	alarm_x := bar.x + bar.width * f32(g.starting_debt * g.tuning.collector_approach_at / limit)
+	rl.DrawRectangle(i32(alarm_x), i32(bar.y) - 4, 2, i32(bar.height) + 8, COLOR_ACCENT)
 
 	y := bar.y + bar.height + 8
 	if g.debt <= 0 {
@@ -166,7 +173,47 @@ draw_entity :: proc(e: Entity, t: Tuning) {
 	case .Popup:
 		alpha := e.timer / t.popup_lifetime
 		text_centered(fmt.tprintf("+%s", money(e.amount)), e.pos.x, e.pos.y, 22, rl.Fade(COLOR_CASH, alpha))
+
+	case .Collector:
+		draw_collector(e)
 	}
+}
+
+COLLECTOR_SUIT :: rl.Color{70, 72, 84, 255}
+COLLECTOR_SKIN :: rl.Color{224, 192, 160, 255}
+
+draw_collector :: proc(e: Entity) {
+	if e.collector == .Away {
+		return
+	}
+	r := entity_rect(e)
+	cx := r.x + r.width / 2
+
+	rl.DrawCircleV({cx, r.y + 10}, 10, COLLECTOR_SKIN)
+	rl.DrawRectangleRounded({r.x, r.y + 20, r.width, r.height - 20}, 0.3, 6, COLLECTOR_SUIT)
+	rl.DrawRectangle(i32(cx) - 2, i32(r.y) + 22, 4, 16, COLOR_DEBT) // tie
+	rl.DrawRectangle(i32(r.x) - 10, i32(r.y) + 36, 12, 10, COLOR_DARK) // briefcase
+
+	label: string
+	switch e.collector {
+	case .Away:
+	case .Approaching:
+		label = "COLLECTOR"
+	case .Collecting:
+		label = "COLLECTING!"
+		if blink() {
+			rl.DrawLineEx({cx, r.y}, {440, 54}, 2, COLOR_DEBT) // to the cash counter
+		}
+	case .Leaving:
+		label = "leaving..."
+	}
+	text_centered(label, cx, r.y - 18, 14, COLOR_DEBT)
+}
+
+draw_door :: proc(g: Game) {
+	door := rl.Rectangle{604, 266, 12, 68}
+	color := collector_state(g) == .Away ? COLOR_DARK : COLOR_DEBT
+	rl.DrawRectangleRec(door, color)
 }
 
 draw_upgrade_panel :: proc(g: Game) {

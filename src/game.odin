@@ -70,6 +70,7 @@ start_job :: proc(g: ^Game, index: int) {
 	g.unlocked = {}
 	clear(&g.entities)
 	spawn_work_button(g)
+	spawn_collector(g)
 	refresh_unlocks(g)
 }
 

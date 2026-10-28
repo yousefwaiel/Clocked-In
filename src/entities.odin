@@ -8,6 +8,7 @@ Entity_Kind :: enum {
 	Work_Button,
 	Coworker,
 	Popup, // +$ text
+	Collector,
 }
 
 Entity :: struct {
@@ -18,6 +19,9 @@ Entity :: struct {
 	timer:  f32, // next click / time left
 	flash:  f32, // highlight time
 	amount: f64,
+
+	collector: Collector_State,
+	progress:  f32, // along the collector path
 }
 
 spawn_work_button :: proc(g: ^Game) {
@@ -84,6 +88,9 @@ update_entities :: proc(g: ^Game, dt: f32) {
 		case .Popup:
 			e.pos += e.vel * dt
 			e.timer -= dt
+
+		case .Collector:
+			update_collector(g, e, dt)
 		}
 	}
 

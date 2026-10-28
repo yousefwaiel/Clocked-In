@@ -43,6 +43,13 @@ Tuning :: struct {
 	xp_per_job:         f64,
 	popup_lifetime:     f32,
 	volume:             f32,
+
+	collector_approach_at: f64, // debt / starting debt
+	collector_collect_at:  f64,
+	collector_leave_at:    f64,
+	collector_speed:       f32, // path per second
+	collector_take_rate:   f64, // share of cash per second
+	collector_fee:         f64, // share of what he takes that doesn't pay debt
 }
 
 current_job :: proc(g: Game) -> Job {
@@ -86,6 +93,10 @@ interest_rate :: proc(g: Game) -> f64 {
 
 bankrupt_limit :: proc(g: Game) -> f64 {
 	return g.starting_debt * g.tuning.bankrupt_factor
+}
+
+debt_ratio :: proc(g: Game) -> f64 {
+	return g.debt / g.starting_debt
 }
 
 paid_fraction :: proc(g: Game) -> f64 {
