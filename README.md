@@ -49,7 +49,7 @@ The title screen explains the rules, so you don't need this README to play.
 
 All balance values live in `data/`. Edit them and re-run the game; no rebuild needed.
 
-- `data/tuning.json`: interest, payment share, bankrupt limit, loan size, coworker speed, volume, and more
+- `data/tuning.json`: interest, payment share, bankrupt limit, loan size, coworker speed, Debt Collector thresholds, volume, and more
 - `data/jobs.json`: the job ladder (title, starting debt, wage)
 - `data/upgrades.json`: upgrade names, prices, limits and unlock points
 
@@ -61,7 +61,8 @@ Example: set `interest_per_sec` to `0.08` and debt climbs fast enough to bankrup
 src/
   main.odin       game loop: input -> update -> draw
   game.odin       Game struct, game states, all update logic
-  entities.odin   Entity data (work button, coworkers, popups) and their update
+  entities.odin   Entity data (work button, coworkers, popups, collector) and their update
+  collector.odin  Debt Collector state machine and scripted path
   economy.odin    job/upgrade/tuning types and the formulas that use them
   data.odin       loads data/*.json at startup
   assets.odin     loads sounds once at startup, plays the ones update asked for

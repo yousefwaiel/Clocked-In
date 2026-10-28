@@ -2,7 +2,7 @@
 
 **Student Name:** Yousef Waiel Said  
 **Student ID:** 100857349  
-**First draft:** 22/09/2026 (CP1) · **Last updated:** 20/10/2026 (CP3; scope locked at CP2)  
+**First draft:** 22/09/2026 (CP1) · **Last updated:** 27/10/2026 (CP4; scope locked at CP2)  
 **Class:** CSCI 4160U Game Development  
 **Repository Link:** https://github.com/yousefwaiel/Clocked-In
 
@@ -30,7 +30,7 @@ Once your debt hits zero, you can **Quit** and move on to a better-paying job. Q
 2. A share of every paycheck automatically goes toward debt.
 3. Spend the leftover cash on upgrades.
 4. Decide whether to take a Payday Loan for faster income or play it safe.
-5. Keep the debt ahead of interest (and, from CP4, keep the Debt Collector away from your cash).
+5. Keep the debt ahead of interest, or the Debt Collector walks in and starts taking your cash.
 6. Pay off the debt → **Quit** → start the next, bigger job with your Experience multiplier.
 
 ## Mechanics
@@ -53,17 +53,44 @@ Spending cash on upgrades (5 upgrades per job, unlocked as the debt is paid down
 
 **Interest:** debt grows a small percentage every second, so stalling is never free.
 
-**Debt Collector (CP4):** an enemy that walks into the office and heads for your cash. If he reaches it, he takes a cut. Clicking him chases him off, but that click doesn't earn anything, so it's a trade-off.
+**Debt Collector:** an enemy who walks into the office toward your cash as your debt grows, and takes a cut once he reaches it. See *Debt Collector (Enemy AI)* below.
 
 ### Tertiary Mechanics
 
 **Quit / New Job (prestige):** once a job's debt is fully paid you can quit. Cash, debt and upgrades reset, and you gain a permanent **+0.5× Experience multiplier** on all pay. Each new job has a bigger debt and a higher wage.
 
+## Debt Collector (Enemy AI)
+
+The Debt Collector is the game's enemy. He works through systems that already exist: he reads your **debt**, walks toward your **cash** counter, and takes money out of it.
+
+### State machine
+
+| State | What he does | Transition |
+|---|---|---|
+| **Away** | Outside the office, not drawn | → Approaching when debt ≥ 115% of the job's starting debt |
+| **Approaching** | Walks the path from the door toward your cash. How far along he gets depends on how much you owe | → Collecting when he reaches your cash (debt ≥ 160%); → Leaving if debt drops below 105% |
+| **Collecting** | Takes 25% of your cash per second. Half pays your debt; he keeps the other half as a fee. Cash counter turns red | → Leaving when debt drops below 105% |
+| **Leaving** | Walks back to the door | → Away when he reaches the door |
+
+The approach and leave thresholds are different on purpose (115% vs 105%), so he doesn't flicker in and out when the debt is right on the line. All thresholds, speed and take rate live in `data/tuning.json`.
+
+### Movement: scripted
+
+He moves along a fixed path (door → corridor → under the cash counter). His position on that path is driven by the debt: the more you owe, the closer he gets to your cash. He walks toward that point at a fixed speed instead of teleporting.
+
+**Why scripted, not steering or pathfinding:**
+
+- **The office is one fixed screen with nothing to route around.** A* would find the same path every time, so it would add cost without changing anything.
+- **His position is the information.** Because his distance from your cash is tied to the debt, he works as a danger meter you can read at a glance (pillar 4). With steering, his position would depend on physics and timing instead of on the debt, and that signal would be lost.
+- **It creates urgency.** Watching him walk closer as debt builds up pushes you to pay down debt or stop taking loans, which is the core tension of the game (pillar 2).
+
+This approach was agreed with the TA (Nour) and approved by the professor for CP4. It replaces the seek/flee steering in the CP2 plan.
+
 ## Goal · Opposition · Decisions · Rules
 
 - **Goal:** pay off each job's debt and climb from Janitor to a debt-free CEO.
 - **Opposition:** interest that grows the debt every second, the bankruptcy limit, rising upgrade prices, and the Debt Collector.
-- **Decisions:** which upgrade to buy next; whether a Payday Loan is worth its debt; whether to spend a click chasing the Debt Collector or keep working; when to stop buying and just pay down debt.
+- **Decisions:** which upgrade to buy next; whether a Payday Loan is worth its debt; whether to spend cash on upgrades or pay debt down fast enough to send the Debt Collector away; when to stop buying and just pay down debt.
 - **Rules:**
   - A fixed share of every dollar earned (50% at the start) pays debt, and the rest is cash.
   - Debt grows by the interest rate every second.
@@ -163,13 +190,13 @@ Ranked within each tier. After CP2, scope changes need a conversation with the T
 5. Quit / prestige with an Experience multiplier across 6 jobs ✅ *(CP2)*
 6. Title screen that teaches the game, plus pause and end screens ✅ *(CP2)*
 7. Tuning values and job data loaded from files in `data/` ✅ *(CP3)*
-8. **Debt Collector** enemy: state machine (Waiting → Approaching → Collecting → Fleeing) with seek/arrive/flee steering *(CP4)*
+8. **Debt Collector** enemy: state machine (Away → Approaching → Collecting → Leaving) with scripted movement ✅ *(CP4)*
 9. Simple sound effects: work click, purchase, loan, denied, quit, bankrupt ✅ *(CP3)*
 10. Difficulty tuned from playtest data to a ~10-minute run *(CP5/CP6)*
 
 ### Should-have
 
-1. Debt Collector visits more often the more loans you hold.
+1. Debt Collector visits more often the more loans you hold. ✅ *(falls out of the CP4 design: loans raise debt)*
 2. Unlock and purchase feedback (flash, number pop).
 3. Late fee added to debt when the Debt Collector finds no cash.
 
