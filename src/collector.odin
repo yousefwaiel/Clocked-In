@@ -48,7 +48,11 @@ update_collector :: proc(g: ^Game, e: ^Entity, dt: f32) {
 	case .Collecting:
 		taken := g.cash * t.collector_take_rate * f64(dt)
 		g.cash -= taken
+		g.cash_collected += taken
 		g.debt = max(g.debt - taken * (1 - t.collector_fee), 0) // he keeps a fee
+		if g.cash < g.starting_debt * 0.01 {
+			g.debt += g.starting_debt * t.collector_late_fee * f64(dt) // nothing to take
+		}
 
 		if ratio < t.collector_leave_at {
 			set_collector_state(g, e, .Leaving)

@@ -33,6 +33,16 @@ Run the logic tests (no window opens):
 odin test src -out:build/tests
 ```
 
+## Balancing bots
+
+Run headless playtest bots (no window) and write per-job results to `playtests/sim_<label>.csv`:
+
+```bash
+./build/clocked_in --sim mylabel
+```
+
+See [docs/balancing.md](docs/balancing.md) for what the bots do and the CP5 results.
+
 ## Controls
 
 | Input | Action |
@@ -63,6 +73,7 @@ src/
   game.odin       Game struct, game states, all update logic
   entities.odin   Entity data (work button, coworkers, popups, collector) and their update
   collector.odin  Debt Collector state machine and scripted path
+  sim.odin        headless balancing bots (--sim)
   economy.odin    job/upgrade/tuning types and the formulas that use them
   data.odin       loads data/*.json at startup
   assets.odin     loads sounds once at startup, plays the ones update asked for
@@ -72,6 +83,7 @@ src/
   game_test.odin  logic tests driven through game_update
 data/             tuning, jobs, upgrades (JSON)
 assets/sounds/    sound effects (see ATTRIBUTION.md)
+playtests/        bot results (CSV) used for balancing
 ```
 
 **Game states:** Title → Playing ⇄ Paused; Playing → Job_Complete → Playing (next job); Playing → Game_Over / Victory → Title.

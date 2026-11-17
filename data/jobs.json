@@ -1,8 +1,8 @@
 [
-	{ "title": "Janitor",        "starting_debt": 50,      "wage": 0.25 },
-	{ "title": "Barista",        "starting_debt": 400,     "wage": 1 },
-	{ "title": "Intern",         "starting_debt": 3000,    "wage": 4 },
-	{ "title": "Cubicle Drone",  "starting_debt": 25000,   "wage": 16 },
-	{ "title": "Middle Manager", "starting_debt": 200000,  "wage": 64 },
-	{ "title": "CEO",            "starting_debt": 1500000, "wage": 256 }
+	{ "title": "Janitor",        "starting_debt": 100,     "wage": 0.25 },
+	{ "title": "Barista",        "starting_debt": 800,     "wage": 1 },
+	{ "title": "Intern",         "starting_debt": 6000,    "wage": 4 },
+	{ "title": "Cubicle Drone",  "starting_debt": 50000,   "wage": 16 },
+	{ "title": "Middle Manager", "starting_debt": 400000,  "wage": 64 },
+	{ "title": "CEO",            "starting_debt": 3000000, "wage": 256 }
 ]

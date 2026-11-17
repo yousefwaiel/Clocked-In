@@ -32,6 +32,7 @@ Game :: struct {
 	starting_debt:  f64,
 	owned:          [Upgrade_Kind]int,
 	unlocked:       [Upgrade_Kind]bool,
+	cash_collected: f64, // taken by the collector this job
 
 	should_exit:    bool,
 }
@@ -68,6 +69,7 @@ start_job :: proc(g: ^Game, index: int) {
 	g.cash = 0
 	g.owned = {}
 	g.unlocked = {}
+	g.cash_collected = 0
 	clear(&g.entities)
 	spawn_work_button(g)
 	spawn_collector(g)

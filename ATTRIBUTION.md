@@ -5,7 +5,7 @@ Inspired by Cookie Clicker.
 ## AI Use
 
 - **ChatGPT:** rephrased and proofread the first GDD draft (CP1).
-- **Claude Code:** restructured and extended the GDD for CP2 (design pillars, goal/opposition/decisions/rules, ranked scope with cut line, lose condition, Debt Collector plan). Helped to write the CP2 code in `src/` (game loop, game states, entity collection, input-to-actions, economy, rendering) and the logic tests in `src/game_test.odin`. For CP3, helped move the tuning, job and upgrade values into `data/*.json` with a loader (`src/data.odin`), and add sound loading/playback (`src/assets.odin`). Also used to find CC0 sound effects. For CP4, helped build the Debt Collector (`src/collector.odin`: state machine, scripted path, rendering) and its tests.
+- **Claude Code:** restructured and extended the GDD for CP2 (design pillars, goal/opposition/decisions/rules, ranked scope with cut line, lose condition, Debt Collector plan). Helped to write the CP2 code in `src/` (game loop, game states, entity collection, input-to-actions, economy, rendering) and the logic tests in `src/game_test.odin`. For CP3, helped move the tuning, job and upgrade values into `data/*.json` with a loader (`src/data.odin`), and add sound loading/playback (`src/assets.odin`). Also used to find CC0 sound effects. For CP4, helped build the Debt Collector (`src/collector.odin`: state machine, scripted path, rendering) and its tests. For CP5, helped write the balancing bots (`src/sim.odin`), the loan guard and late fee, and run the tuning passes recorded in `docs/balancing.md`. Drafted the analysis text in `docs/balancing.md`, which was then rephrased into my wording with grammar fixes by AI.
 
 ## Assets
 

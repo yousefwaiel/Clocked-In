@@ -2,7 +2,7 @@
 
 **Student Name:** Yousef Waiel Said  
 **Student ID:** 100857349  
-**First draft:** 22/09/2026 (CP1) · **Last updated:** 27/10/2026 (CP4; scope locked at CP2)  
+**First draft:** 22/09/2026 (CP1) · **Last updated:** 17/11/2026 (CP5; scope locked at CP2)  
 **Class:** CSCI 4160U Game Development  
 **Repository Link:** https://github.com/yousefwaiel/Clocked-In
 
@@ -49,7 +49,7 @@ Spending cash on upgrades (5 upgrades per job, unlocked as the debt is paid down
 | 2 | Overtime | +25% pay per click | Cash |
 | 3 | Budget App | +10% of every paycheck goes to debt (unlocks at 15% paid) | Cash |
 | 4 | Refinance | Interest rate ×0.7 (unlocks at 30% paid) | Cash |
-| 5 | Payday Loan | Pay ×1.5, adds 40% of the job's starting debt | **Debt** |
+| 5 | Payday Loan | Pay ×1.4, adds 20% of the job's starting debt (×1.5 per loan held). Blocked if it would bankrupt you | **Debt** |
 
 **Interest:** debt grows a small percentage every second, so stalling is never free.
 
@@ -69,7 +69,7 @@ The Debt Collector is the game's enemy. He works through systems that already ex
 |---|---|---|
 | **Away** | Outside the office, not drawn | → Approaching when debt ≥ 115% of the job's starting debt |
 | **Approaching** | Walks the path from the door toward your cash. How far along he gets depends on how much you owe | → Collecting when he reaches your cash (debt ≥ 160%); → Leaving if debt drops below 105% |
-| **Collecting** | Takes 25% of your cash per second. Half pays your debt; he keeps the other half as a fee. Cash counter turns red | → Leaving when debt drops below 105% |
+| **Collecting** | Takes 25% of your cash per second. Half pays your debt; he keeps the other half as a fee. If you have no cash, he adds a late fee to your debt (2% of starting debt per second). Cash counter turns red | → Leaving when debt drops below 105% |
 | **Leaving** | Walks back to the door | → Away when he reaches the door |
 
 The approach and leave thresholds are different on purpose (115% vs 105%), so he doesn't flicker in and out when the debt is right on the line. All thresholds, speed and take rate live in `data/tuning.json`.
@@ -157,17 +157,17 @@ The debt system adds a small amount of anxiety that normal clicker games don't h
 
 | Job | Title | Starting debt | Base wage / click |
 |---|---|---|---|
-| 1 | Janitor | $50 | $0.25 |
-| 2 | Barista | $400 | $1 |
-| 3 | Intern | $3,000 | $4 |
-| 4 | Cubicle Drone | $25,000 | $16 |
-| 5 | Middle Manager | $200,000 | $64 |
-| 6 | CEO | $1,500,000 | $256 |
+| 1 | Janitor | $100 | $0.25 |
+| 2 | Barista | $800 | $1 |
+| 3 | Intern | $6,000 | $4 |
+| 4 | Cubicle Drone | $50,000 | $16 |
+| 5 | Middle Manager | $400,000 | $64 |
+| 6 | CEO | $3,000,000 | $256 |
 
 - Within a job, upgrades unlock as the debt is paid down (Budget App at 15%, Refinance at 30%).
 - Each job starts with more debt and pays more. The Experience multiplier (+0.5× per job) makes each new job faster than the last.
 - The job titles are a small humorous reward for each quit.
-- Target session: roughly **10 minutes** from Janitor to CEO. The numbers above are first-pass values, to be tuned with evidence at CP5.
+- Target session: roughly **10 minutes** from Janitor to CEO. Starting debts were doubled at CP5 after bot playtests showed ~5.5-minute runs. See [balancing.md](balancing.md).
 
 ## Themes
 
@@ -192,13 +192,13 @@ Ranked within each tier. After CP2, scope changes need a conversation with the T
 7. Tuning values and job data loaded from files in `data/` ✅ *(CP3)*
 8. **Debt Collector** enemy: state machine (Away → Approaching → Collecting → Leaving) with scripted movement ✅ *(CP4)*
 9. Simple sound effects: work click, purchase, loan, denied, quit, bankrupt ✅ *(CP3)*
-10. Difficulty tuned from playtest data to a ~10-minute run *(CP5/CP6)*
+10. Difficulty tuned from playtest data to a ~10-minute run ✅ *(CP5, bot data; human playtests at CP6)*
 
 ### Should-have
 
 1. Debt Collector visits more often the more loans you hold. ✅ *(falls out of the CP4 design: loans raise debt)*
 2. Unlock and purchase feedback (flash, number pop).
-3. Late fee added to debt when the Debt Collector finds no cash.
+3. Late fee added to debt when the Debt Collector finds no cash. ✅ *(CP5)*
 
 ### Nice-to-have
 

@@ -6,8 +6,8 @@
 	"refinance_factor": 0.7,
 	"bankrupt_factor": 2.0,
 	"overtime_bonus": 0.25,
-	"loan_wage_mult": 1.5,
-	"loan_debt_fraction": 0.4,
+	"loan_wage_mult": 1.4,
+	"loan_debt_fraction": 0.2,
 	"coworker_interval": 1.0,
 	"coworker_share": 0.5,
 	"xp_per_job": 0.5,
@@ -18,5 +18,6 @@
 	"collector_leave_at": 1.05,
 	"collector_speed": 0.35,
 	"collector_take_rate": 0.25,
-	"collector_fee": 0.5
+	"collector_fee": 0.5,
+	"collector_late_fee": 0.02
 }

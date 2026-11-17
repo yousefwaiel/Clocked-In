@@ -57,7 +57,18 @@ payday_loan_adds_debt_and_raises_pay :: proc(t: ^testing.T) {
 	game_update(&g, {.Buy_5}, 0)
 	testing.expect_value(t, g.owned[.Payday_Loan], 1)
 	testing.expect(t, near(g.debt, g.starting_debt + cost))
-	testing.expect(t, near(wage_per_click(g), wage * 1.5))
+	testing.expect(t, near(wage_per_click(g), wage * g.tuning.loan_wage_mult))
+}
+
+@(test)
+loan_that_would_bankrupt_is_blocked :: proc(t: ^testing.T) {
+	g := start_playing()
+	defer game_destroy(&g)
+	g.debt = bankrupt_limit(g) - 1
+	testing.expect_value(t, purchase_status(g, .Payday_Loan), Purchase_Status.Too_Risky)
+	game_update(&g, {.Buy_5}, 0)
+	testing.expect_value(t, g.owned[.Payday_Loan], 0)
+	testing.expect_value(t, g.state, Game_State.Playing)
 }
 
 @(test)
@@ -194,4 +205,17 @@ collector_leaves_when_debt_is_paid :: proc(t: ^testing.T) {
 	testing.expect_value(t, collector_state(g), Collector_State.Leaving)
 	run_for(&g, 4)
 	testing.expect_value(t, collector_state(g), Collector_State.Away)
+}
+
+@(test)
+collector_adds_late_fee_when_broke :: proc(t: ^testing.T) {
+	g := start_playing()
+	defer game_destroy(&g)
+	g.debt = g.starting_debt * 1.7
+	run_for(&g, 3)
+	testing.expect_value(t, collector_state(g), Collector_State.Collecting)
+	debt := g.debt
+	run_for(&g, 1)
+	interest_only := debt * (1 + interest_rate(g))
+	testing.expect(t, g.debt > interest_only)
 }

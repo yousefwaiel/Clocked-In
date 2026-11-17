@@ -50,6 +50,7 @@ Tuning :: struct {
 	collector_speed:       f32, // path per second
 	collector_take_rate:   f64, // share of cash per second
 	collector_fee:         f64, // share of what he takes that doesn't pay debt
+	collector_late_fee:    f64, // starting debt per second when you're broke
 }
 
 current_job :: proc(g: Game) -> Job {
@@ -118,6 +119,7 @@ Purchase_Status :: enum {
 	Locked,
 	Maxed,
 	Too_Expensive,
+	Too_Risky, // loan would bankrupt you
 }
 
 purchase_status :: proc(g: Game, kind: Upgrade_Kind) -> Purchase_Status {
@@ -129,6 +131,8 @@ purchase_status :: proc(g: Game, kind: Upgrade_Kind) -> Purchase_Status {
 		return .Maxed
 	case !def.is_loan && g.cash < upgrade_cost(g, kind):
 		return .Too_Expensive
+	case def.is_loan && g.debt + upgrade_cost(g, kind) >= bankrupt_limit(g):
+		return .Too_Risky
 	}
 	return .Ok
 }

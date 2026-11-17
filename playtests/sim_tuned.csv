@@ -1,0 +1,93 @@
+strategy,cps,job,title,seconds,outcome,loans,collector_visits,cash_collected,peak_debt_ratio
+Saver,4,1,Janitor,68.5,quit,0,0,0.00,1.001
+Saver,4,2,Barista,68.5,quit,0,0,0.00,1.001
+Saver,4,3,Intern,72.0,quit,0,0,0.00,1.001
+Saver,4,4,Cubicle Drone,96.0,quit,0,0,0.00,1.006
+Saver,4,5,Middle Manager,146.0,quit,0,0,0.00,1.014
+Saver,4,6,CEO,291.5,quit,0,0,0.00,1.025
+Saver,5,1,Janitor,59.0,quit,0,0,0.00,1.001
+Saver,5,2,Barista,59.0,quit,0,0,0.00,1.001
+Saver,5,3,Intern,64.5,quit,0,0,0.00,1.001
+Saver,5,4,Cubicle Drone,82.5,quit,0,0,0.00,1.003
+Saver,5,5,Middle Manager,123.5,quit,0,0,0.00,1.009
+Saver,5,6,CEO,226.5,quit,0,0,0.00,1.017
+Saver,6,1,Janitor,53.0,quit,0,0,0.00,1.000
+Saver,6,2,Barista,53.0,quit,0,0,0.00,1.000
+Saver,6,3,Intern,57.0,quit,0,0,0.00,1.000
+Saver,6,4,Cubicle Drone,73.5,quit,0,0,0.00,1.001
+Saver,6,5,Middle Manager,107.5,quit,0,0,0.00,1.006
+Saver,6,6,CEO,188.5,quit,0,0,0.00,1.013
+Saver,7,1,Janitor,47.0,quit,0,0,0.00,1.000
+Saver,7,2,Barista,47.0,quit,0,0,0.00,1.000
+Saver,7,3,Intern,51.5,quit,0,0,0.00,1.000
+Saver,7,4,Cubicle Drone,67.5,quit,0,0,0.00,1.000
+Saver,7,5,Middle Manager,95.0,quit,0,0,0.00,1.004
+Saver,7,6,CEO,162.0,quit,0,0,0.00,1.009
+Careful,4,1,Janitor,60.5,quit,4,0,0.00,1.146
+Careful,4,2,Barista,60.5,quit,4,0,0.00,1.146
+Careful,4,3,Intern,69.0,quit,4,0,0.00,1.148
+Careful,4,4,Cubicle Drone,97.0,quit,4,0,0.00,1.146
+Careful,4,5,Middle Manager,160.5,quit,4,0,0.00,1.148
+Careful,4,6,CEO,316.0,quit,4,0,0.00,1.149
+Careful,5,1,Janitor,52.0,quit,4,0,0.00,1.146
+Careful,5,2,Barista,53.5,quit,4,0,0.00,1.150
+Careful,5,3,Intern,60.5,quit,4,0,0.00,1.148
+Careful,5,4,Cubicle Drone,84.0,quit,4,0,0.00,1.149
+Careful,5,5,Middle Manager,136.0,quit,4,0,0.00,1.147
+Careful,5,6,CEO,249.5,quit,4,0,0.00,1.150
+Careful,6,1,Janitor,46.0,quit,4,0,0.00,1.145
+Careful,6,2,Barista,47.0,quit,4,0,0.00,1.147
+Careful,6,3,Intern,53.5,quit,4,0,0.00,1.147
+Careful,6,4,Cubicle Drone,74.5,quit,4,0,0.00,1.148
+Careful,6,5,Middle Manager,118.5,quit,4,0,0.00,1.148
+Careful,6,6,CEO,209.0,quit,4,0,0.00,1.148
+Careful,7,1,Janitor,40.5,quit,4,0,0.00,1.147
+Careful,7,2,Barista,42.0,quit,4,0,0.00,1.148
+Careful,7,3,Intern,48.0,quit,4,0,0.00,1.149
+Careful,7,4,Cubicle Drone,67.0,quit,4,0,0.00,1.148
+Careful,7,5,Middle Manager,104.5,quit,4,0,0.00,1.150
+Careful,7,6,CEO,180.0,quit,4,0,0.00,1.150
+Bold,4,1,Janitor,45.5,quit,4,0,0.00,1.498
+Bold,4,2,Barista,48.0,quit,4,0,0.00,1.499
+Bold,4,3,Intern,57.0,quit,4,0,0.00,1.500
+Bold,4,4,Cubicle Drone,86.5,quit,4,0,0.00,1.499
+Bold,4,5,Middle Manager,147.0,quit,4,0,0.00,1.499
+Bold,4,6,CEO,273.5,quit,4,0,0.00,1.499
+Bold,5,1,Janitor,39.0,quit,4,0,0.00,1.496
+Bold,5,2,Barista,41.0,quit,4,0,0.00,1.498
+Bold,5,3,Intern,49.0,quit,4,0,0.00,1.499
+Bold,5,4,Cubicle Drone,74.5,quit,4,0,0.00,1.499
+Bold,5,5,Middle Manager,125.0,quit,4,0,0.00,1.500
+Bold,5,6,CEO,225.5,quit,4,0,0.00,1.500
+Bold,6,1,Janitor,34.5,quit,4,0,0.00,1.495
+Bold,6,2,Barista,37.0,quit,4,0,0.00,1.497
+Bold,6,3,Intern,44.0,quit,4,0,0.00,1.499
+Bold,6,4,Cubicle Drone,66.0,quit,4,0,0.00,1.500
+Bold,6,5,Middle Manager,109.5,quit,4,0,0.00,1.499
+Bold,6,6,CEO,193.0,quit,4,0,0.00,1.499
+Bold,7,1,Janitor,31.0,quit,4,0,0.00,1.493
+Bold,7,2,Barista,33.5,quit,4,0,0.00,1.496
+Bold,7,3,Intern,39.5,quit,4,0,0.00,1.498
+Bold,7,4,Cubicle Drone,59.5,quit,4,0,0.00,1.500
+Bold,7,5,Middle Manager,97.5,quit,4,0,0.00,1.500
+Bold,7,6,CEO,169.0,quit,4,0,0.00,1.499
+Reckless,4,1,Janitor,40.0,quit,4,1,45.88,1.970
+Reckless,4,2,Barista,41.0,quit,4,1,484.64,1.970
+Reckless,4,3,Intern,48.5,quit,4,1,4503.93,1.977
+Reckless,4,4,Cubicle Drone,7.0,bankrupt,3,1,290.72,2.000
+Reckless,5,1,Janitor,34.5,quit,4,1,42.11,1.966
+Reckless,5,2,Barista,36.0,quit,4,1,408.03,1.990
+Reckless,5,3,Intern,43.0,quit,4,1,3705.77,1.978
+Reckless,5,4,Cubicle Drone,63.0,quit,4,1,41903.10,1.983
+Reckless,5,5,Middle Manager,5.8,bankrupt,3,1,1637.40,2.000
+Reckless,6,1,Janitor,30.5,quit,4,1,39.03,1.980
+Reckless,6,2,Barista,32.5,quit,4,1,363.05,1.971
+Reckless,6,3,Intern,38.5,quit,4,1,3353.89,1.973
+Reckless,6,4,Cubicle Drone,55.5,quit,4,1,37407.17,1.974
+Reckless,6,5,Middle Manager,7.5,bankrupt,3,1,3658.28,2.000
+Reckless,7,1,Janitor,27.0,quit,4,1,36.59,1.989
+Reckless,7,2,Barista,29.5,quit,4,1,325.95,1.959
+Reckless,7,3,Intern,35.0,quit,4,1,3170.88,1.957
+Reckless,7,4,Cubicle Drone,50.0,quit,4,1,35468.85,1.973
+Reckless,7,5,Middle Manager,76.0,quit,4,1,401612.89,1.991
+Reckless,7,6,CEO,5.6,bankrupt,3,1,11897.28,2.000

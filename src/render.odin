@@ -261,6 +261,9 @@ draw_upgrade_button :: proc(g: Game, kind: Upgrade_Kind) {
 		price = fmt.tprintf("Unlocks at %.0f%% debt paid", def.unlock_at * 100)
 	case .Maxed:
 		price = "MAXED"
+	case .Too_Risky:
+		price = "Would bankrupt you"
+		price_color = COLOR_DEBT
 	case .Ok, .Too_Expensive:
 		if def.is_loan {
 			price = fmt.tprintf("+%s debt", money(cost))

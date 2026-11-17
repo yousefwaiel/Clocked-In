@@ -1,8 +1,14 @@
 package clocked_in
 
+import "core:os"
 import rl "vendor:raylib"
 
 main :: proc() {
+	if len(os.args) > 1 && os.args[1] == "--sim" {
+		run_sims()
+		return
+	}
+
 	rl.InitWindow(SCREEN_W, SCREEN_H, "Clocked In")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
